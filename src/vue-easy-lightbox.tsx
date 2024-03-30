@@ -116,6 +116,14 @@ export default defineComponent({
     dblclickDisabled: {
       type: Boolean,
       default: false
+    },
+    initScale: {
+      type: Number,
+      default: 1
+    },
+    initRotateDeg: {
+      type: Number,
+      default: 0
     }
   },
   emits: {
@@ -136,9 +144,9 @@ export default defineComponent({
     const lastBodyStyleOverflowY = ref('')
 
     const imgWrapperState = reactive<IImgWrapperState>({
-      scale: 1,
+      scale: props.initScale,
       lastScale: 1,
-      rotateDeg: 0,
+      rotateDeg: props.initRotateDeg,
       top: 0,
       left: 0,
       initX: 0,
@@ -209,9 +217,9 @@ export default defineComponent({
     }
 
     const initImg = () => {
-      imgWrapperState.scale = 1
+      imgWrapperState.scale = props.initScale
       imgWrapperState.lastScale = 1
-      imgWrapperState.rotateDeg = 0
+      imgWrapperState.rotateDeg = props.initRotateDeg
       imgWrapperState.top = 0
       imgWrapperState.left = 0
       status.loadError = false
@@ -388,10 +396,24 @@ export default defineComponent({
         closeModal()
       }
       if (evt.key === 'ArrowLeft') {
-        props.rtl ? onNext() : onPrev()
+        imgWrapperState.left = imgWrapperState.left - 80
+        // props.rtl ? onNext() : onPrev()
       }
       if (evt.key === 'ArrowRight') {
-        props.rtl ? onPrev() : onNext()
+        imgWrapperState.left = imgWrapperState.left + 80
+        // props.rtl ? onPrev() : onNext()
+      }
+      if (evt.key === 'ArrowUp') {
+        imgWrapperState.top = imgWrapperState.top - 80
+      }
+      if (evt.key === 'ArrowDown') {
+        imgWrapperState.top = imgWrapperState.top + 80
+      }
+      if (evt.key === '-' || evt.key === '_') {
+        zoomOut()
+      }
+      if (evt.key === '+' || evt.key === '=') {
+        zoomIn()
       }
     }
 
